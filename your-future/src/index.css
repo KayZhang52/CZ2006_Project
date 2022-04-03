@@ -1,3 +1,7 @@
 .university {
   border: 1px grey solid;
 }
+
+* {
+  max-width: 100%;
+}

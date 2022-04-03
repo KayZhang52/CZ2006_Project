@@ -1,12 +1,12 @@
 import React from "react";
 import SearchBar from "../components/SearchBar";
 import University from "../components/University";
-import { Heading, Icon, Flex } from "@chakra-ui/react";
+import { Heading, Icon, Flex, Box } from "@chakra-ui/react";
 import { SiGooglescholar } from "react-icons/si";
 
 function Home() {
   return (
-    <div>
+    <Box>
       {" "}
       <Flex direction={"horizontal"} h="100px" align="center" justify="center">
         <Heading size="4xl">Your Future</Heading>
@@ -21,7 +21,7 @@ function Home() {
           "https://imageio.forbes.com/specials-images/imageserve/1209892117/Dunster-House/960x0.jpg?fit=bounds&format=jpg&width=960"
         }
       ></University>
-    </div>
+    </Box>
   );
 }
 
