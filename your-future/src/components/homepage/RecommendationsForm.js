@@ -18,6 +18,7 @@ import {
   SliderThumb,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 function RecommendationsForm(props) {
   const [page, setPage] = useState(1);
@@ -124,7 +125,7 @@ function RecommendationsForm(props) {
                       setPage(3);
                     }}
                   >
-                    Submit
+                    Continue
                   </Button>
                 </GridItem>
               </SimpleGrid>
@@ -202,10 +203,10 @@ function RecommendationsForm(props) {
                     size="lg"
                     w="full"
                     onClick={() => {
-                      setPage(4);
+                      return <Navigate to="/recommendationResult"></Navigate>;
                     }}
                   >
-                    Continue
+                    Submit
                   </Button>
                 </GridItem>
               </SimpleGrid>
@@ -213,15 +214,7 @@ function RecommendationsForm(props) {
           </VStack>
         );
       case 4:
-        return (
-          <h1
-            onClick={() => {
-              setPage(1);
-            }}
-          >
-            Coming Soon.
-          </h1>
-        );
+        return <h1>Coming Soon.</h1>;
     }
   })();
   return (

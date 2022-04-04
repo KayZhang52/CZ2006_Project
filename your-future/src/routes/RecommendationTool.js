@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container } from "@chakra-ui/react";
-import RecommendationsForm from "../components/RecommendationsForm";
+import RecommendationsForm from "../components/homepage/RecommendationsForm";
 
 function RecommendationTool() {
   return (

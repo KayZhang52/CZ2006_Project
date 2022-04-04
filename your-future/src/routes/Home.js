@@ -1,17 +1,14 @@
 import React from "react";
-import SearchBar from "../components/SearchBar";
-import University from "../components/University";
+import SearchBar from "../components/homepage/SearchBar";
+import University from "../components/homepage/UniversityBadge";
 import { Heading, Icon, Flex, Box } from "@chakra-ui/react";
-import { SiGooglescholar } from "react-icons/si";
+import CompanyLogo from "../components/homepage/CompanyLogo";
 
 function Home() {
   return (
     <Box>
       {" "}
-      <Flex direction={"horizontal"} h="100px" align="center" justify="center">
-        <Heading size="4xl">Your Future</Heading>
-        <Icon as={SiGooglescholar} boxSize={"3rem"}></Icon>
-      </Flex>
+      <CompanyLogo></CompanyLogo>
       <SearchBar></SearchBar>
       <University
         name={"NTU"}

@@ -3,30 +3,25 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function NavBar() {
+  const part = (to, text) => {
+    return (
+      <Button>
+        <Link to={to}>{text}</Link>
+      </Button>
+    );
+  };
   return (
     <Flex pb={"2rem"}>
       <HStack>
-        <Button>
-          <Link to="/">Home</Link>
-        </Button>
-        <Button>
-          <Link to="recommendation">Get Recommendations</Link>
-        </Button>
-        <Button>
-          <Link to="reviews">View Reviews</Link>
-        </Button>
-        <Button>
-          <Link to="test">test</Link>
-        </Button>
+        {part("/", "Home")}
+        {part("recommendation", "Get Recommendations")}
+        {part("reviews", "View Schools")}
+        {part("test", "test")}
       </HStack>
       <Spacer></Spacer>
       <HStack>
-        <Button>
-          <Link to="login">Login</Link>
-        </Button>
-        <Button>
-          <Link to="signup">Sign Up</Link>
-        </Button>
+        {part("login", "Login")}
+        {part("signup", "Sign Up")}
       </HStack>
     </Flex>
   );

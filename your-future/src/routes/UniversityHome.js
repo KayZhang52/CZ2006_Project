@@ -1,10 +1,14 @@
-import { Box, Container, Flex, Image, VStack } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Image, VStack } from "@chakra-ui/react";
 import React, { useState } from "react";
-import Review from "../components/Review";
+import FunctionBar from "../components/university/FunctionBar";
+import TitleBox from "../components/university/TitleBox";
+import Review from "../components/university/Review";
 const { useEffect } = require("react");
 
 function UniversityHome(props) {
   const [data, setData] = useState([]);
+  const uniName = useState("Name not Found.");
+  const [rating, setRating] = useState(5);
   const getData = () => {
     fetch("./data/Appliances_5.json", {
       headers: {
@@ -27,10 +31,10 @@ function UniversityHome(props) {
   const [email, setEmail] = useState("example@yahoo.com");
   return (
     <Box>
-      <Image src="https://billfish.org/wp-content/uploads/2019/08/placeholder-image-1030x773.jpg"></Image>
+      <TitleBox></TitleBox>
       <Flex className="UniversityHome" justify={"space-around"}>
-        <VStack grow={2}>
-          {" "}
+        <Flex grow={2} justify="left" direction={"column"}>
+          <FunctionBar></FunctionBar>{" "}
           {data.slice(0, 100).map((entry, index) => {
             return (
               <Review
@@ -41,7 +45,7 @@ function UniversityHome(props) {
               ></Review>
             );
           })}
-        </VStack>
+        </Flex>
         <VStack grow={1}>
           <Box
             border="1px"

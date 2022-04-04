@@ -1,6 +1,5 @@
 import { Box, Text, VStack, Image, Button, HStack } from "@chakra-ui/react";
 
-
 export default function (props) {
   return (
     <Box className="university" w={"200px"} mb={20}>
@@ -13,8 +12,9 @@ export default function (props) {
           {"\u2606".repeat(5 - props.rating)}
         </Text>
       </VStack>
-      <HStack w={"100%"} justify={"flex-end"}><Button>See Details</Button> </HStack>
-  
+      <HStack w={"100%"} justify={"flex-end"}>
+        <Button>See Details</Button>{" "}
+      </HStack>
     </Box>
   );
 }
