@@ -7,24 +7,14 @@ const { useEffect } = require("react");
 
 function UniversityHome(props) {
   const [data, setData] = useState([]);
-  const uniName = useState("Name not Found.");
-  const [rating, setRating] = useState(5);
-  const getData = () => {
-    fetch("./data/Appliances_5.json", {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
+  useEffect(() => {
+    fetch("/university")
       .then(function (response) {
         return response.json();
       })
-      .then(function (myJson) {
-        setData(myJson);
+      .then(function (data) {
+        setData(data["data"]);
       });
-  };
-  useEffect(() => {
-    getData();
   }, []);
 
   const [address, setAddress] = useState("Address Not Found");

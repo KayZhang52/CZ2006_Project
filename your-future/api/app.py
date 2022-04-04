@@ -11,11 +11,25 @@ app.config['MYSQL_DB'] = 'yourfuture'
 mysql = MySQL(app)
 
 #needs work on the front end, fetch is asynchronous hence mechanisms needed to avoid error
-@app.route('/givedatabitch')
+@app.route('/universities')
 def get_data():
-    f=open("dataset1.json")
-    obj = json.load(f)
-    return {"elements":obj}; 
+    universities = [{
+        "name":"Hather University",
+        "rating":5,
+        "country":"USA",
+        "city":"shanghai"
+    },{
+        "name":"Hather University",
+        "rating":5,
+        "country":"USA",
+        "city":"shanghai"
+    },{
+        "name":"Hather University",
+        "rating":5,
+        "country":"USA",
+        "city":"shanghai"
+    }]
+    return {"data":universities}; 
 
 @app.route('/sqltest')
 def querydb():
@@ -24,4 +38,9 @@ def querydb():
     mysql.connection.commit()
     cursor.close()
     return f"Done!!"
+
+@app.route('/')
+def basic():
+    print("hi")
+    return "hi"
 

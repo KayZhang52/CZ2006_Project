@@ -1,6 +1,8 @@
 import { Box, Text, VStack, Image, Button, HStack } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export default function (props) {
+  const navigate = useNavigate();
   return (
     <Box className="university" w={"200px"} mb={20}>
       <Image src="https://imageio.forbes.com/specials-images/imageserve/1209892117/Dunster-House/960x0.jpg?fit=bounds&format=jpg&width=960"></Image>
@@ -13,7 +15,13 @@ export default function (props) {
         </Text>
       </VStack>
       <HStack w={"100%"} justify={"flex-end"}>
-        <Button>See Details</Button>{" "}
+        <Button
+          onClick={() => {
+            navigate("/university/".concat(props.name));
+          }}
+        >
+          See Details
+        </Button>{" "}
       </HStack>
     </Box>
   );
