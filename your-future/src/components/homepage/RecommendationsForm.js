@@ -17,23 +17,29 @@ import {
   SliderFilledTrack,
   SliderThumb,
 } from "@chakra-ui/react";
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function RecommendationsForm(props) {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [results, setResults] = useState([]);
   const getRecommendations = () => {
-    fetch("/universities")
-      .then((res) => res.json)
-      .then((data) => {
-        console.log(data);
-        setResults(data);
-      });
+    fetch("/universities").then((res) =>
+      res.json().then((data) => {
+        /* 1. data is a dictionay with key 'data' and value of a stringified json object
+            2. JSON.parse(data['data']) gives a JSON list of objects
+        */
+        localStorage.setItem("recommendations", data["data"]);
+        console.log(localStorage.getItem("recommendations"));
+      })
+    );
   };
   const handleSubmit = () => {
     getRecommendations();
+    navigate("/test");
   };
+
   const Form = (function () {
     switch (page) {
       case 1:
@@ -215,7 +221,7 @@ function RecommendationsForm(props) {
                     size="lg"
                     w="full"
                     onClick={() => {
-                      return <Navigate to="/recommendationResult"></Navigate>;
+                      handleSubmit();
                     }}
                   >
                     Submit

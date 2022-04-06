@@ -9,7 +9,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Select,
   Checkbox,
   Button,
 } from "@chakra-ui/react";
@@ -38,13 +37,10 @@ function LoginForm(props) {
       method: "POST",
       body: JSON.stringify(userDetails),
     }).then((res) => {
-      console.log("res: ", res);
       res.text().then((data) => {
-        console.log(data);
         if ((data = "successful")) {
           loginHandler(true);
           setIsLoggedIn(true);
-          console.log("isLoggedin: ", isLoggedIn);
         }
       });
     });

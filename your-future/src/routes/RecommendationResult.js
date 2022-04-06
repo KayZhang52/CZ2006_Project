@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Box, Flex } from "@chakra-ui/react";
+import { Bar } from "react-chartjs-2";
 
 function RecommendationResult(props) {
+  const results = JSON.parse(localStorage.getItem("recommendations"));
+  useEffect(() => {
+    console.log(results);
+  });
   return (
     <Container maxW="100%">
       <Box
@@ -23,10 +28,13 @@ function RecommendationResult(props) {
           Filters:
         </Box>
         <Box className="graphsBox" bgColor="#EDF2F7" flex={1} minH="1000px">
-          Data Visualization
+          Data Visualization:
         </Box>
         <Box className="recommendationBox" flex={1} minH="1000px">
           Our Recommendations
+          {results.map((data, index) => {
+            return <p key={index}>{data.name}</p>;
+          })}
         </Box>
       </Flex>
     </Container>

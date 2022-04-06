@@ -31,8 +31,11 @@ ReactDOM.render(
             path="recommendation-page"
             element={<RecommendationResult />}
           ></Route>
-          <Route path="/home" element={<UniversityHome />}></Route>
-          <Route path="/schools" element={<SchoolList />}></Route>
+          <Route
+            path="/schoolhome/:school"
+            element={<UniversityHome />}
+          ></Route>
+          <Route path="/schools/" element={<SchoolList />}></Route>
         </Route>
       </Routes>
     </Router>

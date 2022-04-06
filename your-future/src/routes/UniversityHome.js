@@ -3,25 +3,27 @@ import React, { useState } from "react";
 import FunctionBar from "../components/university/FunctionBar";
 import TitleBox from "../components/university/TitleBox";
 import Review from "../components/university/Review";
+import { useParams } from "react-router-dom";
 const { useEffect } = require("react");
 
 function UniversityHome(props) {
   const [data, setData] = useState([]);
-  useEffect(() => {
-    fetch("/university")
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        setData(data["data"]);
+  const { school } = useParams();
+
+  const getUniversities = () => {
+    fetch("/university?".concat(school)).then((res) => {
+      res.json().then((data) => {
+        console.log("api returns: ", data);
       });
-  }, []);
+    });
+  };
+  useEffect(getUniversities, []);
 
   const [address, setAddress] = useState("Address Not Found");
-  const [email, setEmail] = useState("example@yahoo.com");
+  const [email, setEmail] = useState("Email not found");
   return (
     <Box>
-      <TitleBox></TitleBox>
+      <TitleBox name={school} reviews={10}></TitleBox>
       <Flex className="UniversityHome" justify={"space-around"}>
         <Flex grow={2} justify="left" direction={"column"}>
           <FunctionBar></FunctionBar>{" "}

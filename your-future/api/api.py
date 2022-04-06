@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, flash
+
+from flask import Flask, jsonify, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
 import sys, json
 
@@ -13,9 +14,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 class Dataset1(db.Model):
-    Institution = db.Column(db.String, primary_key = True)
+    institution = db.Column(db.String, primary_key = True)
     score = db.Column(db.String)
-    Location = db.Column(db.String)
+    location = db.Column(db.String)
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
@@ -27,22 +28,35 @@ class Users(db.Model):
     lastName = db.Column(db.String)
     country = db.Column(db.String)
     currentUniversity = db.Column(db.String)
-    
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 #endpoint for university data
-@app.route('/universities')
-def university_query():
+@app.route('/universities', methods= ['GET', 'POST'])
+def universities_query():
     """need to query database"""
     country = request.args.get("country", default="*", type=str)
-    if(country=="*"):
-        results = Dataset1.query.filter(Dataset1.Location == country).order_by(Dataset1.Institution).limit(100).all()
+    if(country!="*"):
+        results = Dataset1.query.filter(Dataset1.location == country).order_by(Dataset1.institution).limit(100).all()
     else:
         results = Dataset1.query.limit(100).all()
-    for thing in results:
-        print(thing)
-    print("hello world")
-    return "jsonified_data"
+    list = []
+    for row in results:
+        list.append(row.as_dict())
+    jsonifiedResult = json.dumps(list)
+    return {'data' : jsonifiedResult}
+
+#endpoint for specific university
+@app.route('/university', methods= ['GET', 'POST'])
+def university_query():
+    institution = request.args.get("institution", default="*", type=str)
+    if(institution!="*"):
+        result = Dataset1.query.filter(Dataset1.institution == institution).order_by(Dataset1.score).first()
+    else:
+        return "not found 404."
+    print(result)
+    return {'data':''}
 
 @app.route('/sqltest')
 def querydb():

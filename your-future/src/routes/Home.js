@@ -11,12 +11,10 @@ function Home() {
     fetch("/universities")
       .then((res) => res.json())
       .then((data) => {
-        setUniversities(data["data"]);
-        console.log(universities);
+        setUniversities(JSON.parse(data["data"]));
       });
   }, []);
   const display = universities.map((object, index) => {
-    console.log(universities);
     return (
       <UniversityBadge
         key={index}
