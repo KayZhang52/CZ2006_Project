@@ -15,7 +15,7 @@ function NavBar() {
       <HStack>
         {part("/", "Home")}
         {part("recommendation", "Get Recommendations")}
-        {part("reviews", "View Schools")}
+        {part("schools", "View Schools")}
         {part("test", "test")}
       </HStack>
       <Spacer></Spacer>
