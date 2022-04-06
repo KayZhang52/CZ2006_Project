@@ -57,9 +57,9 @@ function SignUpForm(props) {
       body: JSON.stringify(userDetails),
     }).then((res) => {
       console.log("res: ", res);
-      res.json().then((data) => {
+      res.text().then((data) => {
         console.log(data);
-        if ((data["signupStatus"] = "successful")) {
+        if ((data = "successful")) {
           navigateTo("/");
         }
       });

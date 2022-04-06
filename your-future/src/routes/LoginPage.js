@@ -11,13 +11,14 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
   return (
     <Container>
-      <LoginForm setisLoggedIn={setIsLoggedIn}></LoginForm>{" "}
+      <LoginForm loginHandler={onOpen}></LoginForm>{" "}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -25,7 +26,7 @@ function LoginPage() {
           <ModalCloseButton />
           <ModalBody></ModalBody>
           <ModalFooter>
-            <Button colorScheme="green" mr={3} onClick={onClose}>
+            <Button colorScheme="green" mr={3} onClick={() => navigate("/")}>
               Close
             </Button>
           </ModalFooter>

@@ -26,8 +26,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function LoginForm(props) {
+  const { loginHandler } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const navigateTo = useNavigate();
 
@@ -45,10 +48,10 @@ function LoginForm(props) {
       body: JSON.stringify(userDetails),
     }).then((res) => {
       console.log("res: ", res);
-      res.json().then((data) => {
+      res.text().then((data) => {
         console.log(data);
         if ((data = "successful")) {
-          props.setIsLoggedInStatus(true);
+          loginHandler(true);
         }
       });
     });
@@ -78,12 +81,18 @@ function LoginForm(props) {
           <GridItem colSpan={2}>
             <FormControl></FormControl>
             <FormLabel>Email</FormLabel>
-            <Input placeholder="John@gmail.com"></Input>
+            <Input
+              placeholder="John@gmail.com"
+              onChange={handleEmailChange}
+            ></Input>
           </GridItem>{" "}
           <GridItem colSpan={2}>
             <FormControl></FormControl>
             <FormLabel>Password</FormLabel>
-            <Input placeholder="password123"></Input>
+            <Input
+              placeholder="password123"
+              onChange={handlePasswordChange}
+            ></Input>
           </GridItem>
           <GridItem colSpan={2}>
             <Checkbox defaultChecked>remember me</Checkbox>
