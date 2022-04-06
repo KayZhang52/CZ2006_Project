@@ -22,6 +22,18 @@ import { Navigate } from "react-router-dom";
 
 function RecommendationsForm(props) {
   const [page, setPage] = useState(1);
+  const [results, setResults] = useState([]);
+  const getRecommendations = () => {
+    fetch("/universities")
+      .then((res) => res.json)
+      .then((data) => {
+        console.log(data);
+        setResults(data);
+      });
+  };
+  const handleSubmit = () => {
+    getRecommendations();
+  };
   const Form = (function () {
     switch (page) {
       case 1:

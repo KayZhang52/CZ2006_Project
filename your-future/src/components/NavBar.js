@@ -1,8 +1,9 @@
 import { Flex, HStack, Spacer, Button } from "@chakra-ui/react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
-function NavBar() {
+function NavBar(props) {
+  const { isLoggedIn, setIsLoggedIn } = props;
   const part = (to, text) => {
     return (
       <Button>
@@ -10,6 +11,27 @@ function NavBar() {
       </Button>
     );
   };
+
+  const userRelated = !isLoggedIn ? (
+    <HStack>
+      {part("login", "Login")}
+      {part("signup", "Sign Up")}
+    </HStack>
+  ) : (
+    <HStack>
+      {
+        <Button
+          onClick={() => {
+            setIsLoggedIn(false);
+            console.log("loginStatus: ", isLoggedIn);
+          }}
+        >
+          Log Out
+        </Button>
+      }
+    </HStack>
+  );
+
   return (
     <Flex pb={"2rem"}>
       <HStack>
@@ -19,10 +41,7 @@ function NavBar() {
         {part("test", "test")}
       </HStack>
       <Spacer></Spacer>
-      <HStack>
-        {part("login", "Login")}
-        {part("signup", "Sign Up")}
-      </HStack>
+      {userRelated}
     </Flex>
   );
 }

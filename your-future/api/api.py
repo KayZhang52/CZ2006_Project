@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
-import sys
+import sys, json
 
 
 
@@ -16,6 +16,8 @@ class Dataset1(db.Model):
     Institution = db.Column(db.String, primary_key = True)
     score = db.Column(db.String)
     Location = db.Column(db.String)
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 class Users(db.Model):
     username = db.Column(db.String)
@@ -32,10 +34,15 @@ class Users(db.Model):
 @app.route('/universities')
 def university_query():
     """need to query database"""
-    schools = Dataset1.query.order_by(Dataset1.Institution)
-    for i in range(10):
-        print(schools[i], file=sys.stderr)
-    return render_template("test.html", schools=schools)
+    country = request.args.get("country", default="*", type=str)
+    if(country=="*"):
+        results = Dataset1.query.filter(Dataset1.Location == country).order_by(Dataset1.Institution).limit(100).all()
+    else:
+        results = Dataset1.query.limit(100).all()
+    for thing in results:
+        print(thing)
+    print("hello world")
+    return "jsonified_data"
 
 @app.route('/sqltest')
 def querydb():

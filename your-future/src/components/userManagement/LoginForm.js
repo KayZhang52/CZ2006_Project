@@ -13,26 +13,17 @@ import {
   Checkbox,
   Button,
 } from "@chakra-ui/react";
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-} from "@chakra-ui/react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 function LoginForm(props) {
+  const [isLoggedIn, setIsLoggedIn, userDetails, setUserDetails] =
+    useOutletContext();
   const { loginHandler } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
-
-  const navigateTo = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,6 +43,8 @@ function LoginForm(props) {
         console.log(data);
         if ((data = "successful")) {
           loginHandler(true);
+          setIsLoggedIn(true);
+          console.log("isLoggedin: ", isLoggedIn);
         }
       });
     });

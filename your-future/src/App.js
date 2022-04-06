@@ -4,11 +4,18 @@ import NavBar from "./components/NavBar";
 import { Outlet } from "react-router-dom";
 
 function App() {
-  const [page, setPage] = useState("home");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userDetails, setUserDetails] = useState({
+    username: "",
+    password: "",
+    email: "",
+  });
   return (
     <Container maxW={"100%"}>
-      <NavBar></NavBar>
-      <Outlet />
+      <NavBar setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}></NavBar>
+      <Outlet
+        context={[isLoggedIn, setIsLoggedIn, userDetails, setUserDetails]}
+      />
     </Container>
   );
 }
