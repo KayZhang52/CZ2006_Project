@@ -11,14 +11,14 @@ import {
   Input,
   Checkbox,
   Button,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm(props) {
-  const [isLoggedIn, setIsLoggedIn, userDetails, setUserDetails] =
-    useOutletContext();
-  const { loginHandler } = props;
+  const { isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, openModal } =
+    props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleEmailChange = (e) => setEmail(e.target.value);
@@ -26,7 +26,7 @@ function LoginForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const userDetails = {
+    const loginInfo = {
       email: email,
       password: password,
     };
@@ -35,11 +35,11 @@ function LoginForm(props) {
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify(userDetails),
+      body: JSON.stringify(loginInfo),
     }).then((res) => {
       res.text().then((data) => {
-        if ((data = "successful")) {
-          loginHandler(true);
+        if (data == "successful") {
+          openModal(true);
           setIsLoggedIn(true);
         }
       });
@@ -68,20 +68,23 @@ function LoginForm(props) {
       >
         <SimpleGrid columns={2} columnGap={3} rowGap={6} w="full ">
           <GridItem colSpan={2}>
-            <FormControl></FormControl>
-            <FormLabel>Email</FormLabel>
-            <Input
-              placeholder="John@gmail.com"
-              onChange={handleEmailChange}
-            ></Input>
+            <FormControl isRequired>
+              <FormLabel htmlFor="email">Email</FormLabel>
+              <Input
+                id="email"
+                placeholder="example@gmail.com"
+                onChange={handleEmailChange}
+              ></Input>
+            </FormControl>
           </GridItem>{" "}
           <GridItem colSpan={2}>
-            <FormControl></FormControl>
-            <FormLabel>Password</FormLabel>
-            <Input
-              placeholder="password123"
-              onChange={handlePasswordChange}
-            ></Input>
+            <FormControl isRequired>
+              <FormLabel>Password</FormLabel>
+              <Input
+                placeholder="password123"
+                onChange={handlePasswordChange}
+              ></Input>
+            </FormControl>
           </GridItem>
           <GridItem colSpan={2}>
             <Checkbox defaultChecked>remember me</Checkbox>

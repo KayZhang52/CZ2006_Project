@@ -11,8 +11,13 @@ function App() {
     email: "",
   });
   return (
-    <Container maxW={"100%"}>
-      <NavBar setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn}></NavBar>
+    <Container maxW={"100rem"}>
+      <NavBar
+        setIsLoggedIn={setIsLoggedIn}
+        isLoggedIn={isLoggedIn}
+        userDetails={userDetails}
+        setUserDetails={setUserDetails}
+      ></NavBar>
       <Outlet
         context={[isLoggedIn, setIsLoggedIn, userDetails, setUserDetails]}
       />

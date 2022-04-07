@@ -9,7 +9,7 @@ function SchoolList() {
     fetch("/universities")
       .then((res) => res.json())
       .then((data) => {
-        setUniversities(JSON.parse(data["data"]));
+        setUniversities(data["data"]);
       });
   }, []);
   return (

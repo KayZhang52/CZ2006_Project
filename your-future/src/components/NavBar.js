@@ -1,9 +1,10 @@
-import { Flex, HStack, Spacer, Button } from "@chakra-ui/react";
+import { Flex, HStack, Spacer, Button, Text, Icon } from "@chakra-ui/react";
 import React from "react";
 import { Link, useOutletContext } from "react-router-dom";
+import { BiUserCircle } from "react-icons/bi";
 
 function NavBar(props) {
-  const { isLoggedIn, setIsLoggedIn } = props;
+  const { isLoggedIn, setIsLoggedIn, userDetails, setUserDetails } = props;
   const part = (to, text) => {
     return (
       <Button>
@@ -19,16 +20,16 @@ function NavBar(props) {
     </HStack>
   ) : (
     <HStack>
-      {
-        <Button
-          onClick={() => {
-            setIsLoggedIn(false);
-            console.log("loginStatus: ", isLoggedIn);
-          }}
-        >
-          Log Out
-        </Button>
-      }
+      <Icon as={BiUserCircle}></Icon>
+      <Text>{userDetails.username}</Text>
+
+      <Button
+        onClick={() => {
+          setIsLoggedIn(false);
+        }}
+      >
+        Log Out
+      </Button>
     </HStack>
   );
 
