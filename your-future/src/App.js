@@ -11,16 +11,24 @@ function App() {
     email: "",
   });
   return (
-    <Container maxW={"100rem"}>
-      <NavBar
-        setIsLoggedIn={setIsLoggedIn}
-        isLoggedIn={isLoggedIn}
-        userDetails={userDetails}
-        setUserDetails={setUserDetails}
-      ></NavBar>
-      <Outlet
-        context={[isLoggedIn, setIsLoggedIn, userDetails, setUserDetails]}
-      />
+    <Container
+      className="greyContainer"
+      bg="#a0aec0"
+      minW="100vw"
+      m="0"
+      position={"relative"}
+    >
+      <Container bg="white" m="auto" maxW={"60rem"} minH="100vh">
+        <NavBar
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          userDetails={userDetails}
+          setUserDetails={setUserDetails}
+        ></NavBar>
+        <Outlet
+          context={[isLoggedIn, setIsLoggedIn, userDetails, setUserDetails]}
+        />
+      </Container>
     </Container>
   );
 }

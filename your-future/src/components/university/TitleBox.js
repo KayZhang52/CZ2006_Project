@@ -5,8 +5,8 @@ import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
 function TitleBox(props) {
   const { name, reviews } = props;
   return (
-    <Flex direction={"column"} justify={"left"}>
-      <Heading>{name}</Heading>
+    <Flex direction={"column"} justify={"left"} mb="2rem">
+      <Heading mb="1rem">{name}</Heading>
       <HStack>
         <Box>
           {Array.apply(null, { length: 5 }).map((e, i) => (
@@ -15,7 +15,6 @@ function TitleBox(props) {
         </Box>
         <Box>{reviews} reviews</Box>
       </HStack>
-      <HStack>Asia's number one university</HStack>
     </Flex>
   );
 }

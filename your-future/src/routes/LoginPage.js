@@ -18,23 +18,30 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { useEffect } from "react";
 
 function LoginPage(props) {
+  //state variables
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, openModal } =
-    props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [theme, setTheme] = useState("green");
   const [msg, setMsg] = useState("red");
 
-  const navigate = useNavigate();
+  //test
+  useEffect(() => {
+    // console.log(props);
+  });
 
+  //hooks and handlers
+  const navigate = useNavigate();
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
-
   const handleSubmit = (e) => {
+    if (email == "" || password == "") {
+      return;
+    }
     e.preventDefault();
     const loginInfo = {
       email: email,
@@ -49,18 +56,23 @@ function LoginPage(props) {
     }).then((res) => {
       res.json().then((data) => {
         if (data["loginStatus"] == "successful") {
-          setIsLoggedIn(true);
-          setUserDetails(data["userDetails"]);
           setTheme("green");
-        } else {
-          setTheme("red");
-        }
+          localStorage.setItem("login", "true");
+          localStorage.setItem(
+            "userDetails",
+            JSON.stringify(data["userDetails"])
+          );
+        } else setTheme("red");
+
         setMsg(data["loginStatus"]);
+        //open popup
+        onOpen();
       });
     });
   };
 
-  const popUp = (msg, theme, dest) => {
+  //components
+  const popUp = (msg, theme) => {
     return (
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -69,7 +81,13 @@ function LoginPage(props) {
           <ModalCloseButton />
           <ModalBody></ModalBody>
           <ModalFooter>
-            <Button colorScheme={theme} mr={3} onClick={() => navigate(dest)}>
+            <Button
+              colorScheme={theme}
+              mr={3}
+              onClick={() => {
+                navigate("/");
+              }}
+            >
               Close
             </Button>
           </ModalFooter>
@@ -130,10 +148,11 @@ function LoginPage(props) {
       </VStack>
     </VStack>
   );
+
   return (
     <Container>
       {loginForm}
-      {popUp}
+      {popUp(msg, theme)}
     </Container>
   );
 }

@@ -1,29 +1,46 @@
-import { HStack, VStack, Container, Avatar, Text } from "@chakra-ui/react";
+import {
+  HStack,
+  VStack,
+  Container,
+  Avatar,
+  Text,
+  Flex,
+} from "@chakra-ui/react";
+import { useEffect } from "react";
 
-function Review(props) {
+function Review({ username, comment, rating, dateTime }) {
+  useEffect(() => {
+    console.log(dateTime);
+  });
   return (
-    <Container mb={2}>
-      <VStack>
-        <HStack justify={"flex-start"} w={"100%"}>
+    <Container
+      pb={"1rem"}
+      mt={"1rem"}
+      mb={"1rem"}
+      ml={0}
+      style={{ boxShadow: "0 30px 40px rgba(0,0,0,.1)" }}
+    >
+      <Flex justify={"flex-start"} direction="row">
+        <VStack justify={"flex-start"} w={"5rem"}>
           <Avatar
             src="https://www.gannett-cdn.com/presto/2020/07/29/USAT/73d9330f-c382-4123-a56d-d61eefb2c373-AP_NY_Premiere_of_Netflixs__6_Underground_.JPG?width=660&height=440&fit=crop&format=pjpg&auto=webp"
             size="xs"
           ></Avatar>
-          <Text>{props.username}</Text>
-        </HStack>
+          <Text>{username}</Text>
+        </VStack>
         <VStack>
           <HStack justify={"flex-start"} w={"100%"}>
             {" "}
             <Text>
-              {"\u2605".repeat(props.rating)}
-              {"\u2606".repeat(5 - props.rating)}
+              {"\u2605".repeat(rating)}
+              {"\u2606".repeat(5 - rating)}
             </Text>
-            <Text>reviewed 3 days ago...</Text>
+            {dateTime == null ? "" : <Text>reviewed on {dateTime}</Text>}
           </HStack>
 
-          <Text>{props.comment}</Text>
+          <Text>{comment}</Text>
         </VStack>
-      </VStack>
+      </Flex>
     </Container>
   );
 }

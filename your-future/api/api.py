@@ -1,7 +1,9 @@
 
 from flask import Flask, jsonify, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 import sys, json
+from datetime import datetime
 
 def myPrint(list):
     print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
@@ -42,9 +44,13 @@ class Reviews(db.Model):
     username = db.Column(db.String)
     comment = db.Column(db.String)
     rating = db.Column(db.Integer)
+    reviewDateTime = db.Column(db.DateTime)
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
+class Courses(db.Model):
+    institution = db.Column(db.String, primary_key=True)
+    course = db.Column(db.String, primary_key=True)
 
 #endpoint for university data
 @app.route('/universities', methods= ['GET'])
@@ -112,29 +118,44 @@ def login():
 def reviews():
     if(request.method=='POST'):
         data=request.json
-        new_review=Reviews(username=data['username'], comment=data['comment'], rating=data['rating'], university=data['university'])
+        new_review=Reviews(username=data['username'], comment=data['comment'], rating=data['rating'], university=data['university'], reviewDateTime=datetime.now())
         db.session.add(new_review)
         db.session.commit()
         myPrint(['review submited', 'comment: '+data['comment']])
         return 'successful'
     else:
         school = request.args.get('institution', default="*", type=str)
-        queryResult = Dataset1.query.filter(Reviews.university == school).all()
+        queryResult = Reviews.query.filter(Reviews.university == school).all()
         list = []
         for review in queryResult:
             list.append(review.as_dict())
+        myPrint(['reviews of ' + school + ' requested', list[0:4], "..."])
         return {'data':list}
 
 @app.route('/yourfuturecore', methods=['GET', 'POST'])
-#sqlalchemy
-#how to inner join 2 tables eg. course = CS and country = Singapore
-#SQLAlchemy, ORM tutorial
-#how to conditionally filter based on the json object
 def recommendationLogic():
     if(request.method=='POST'):
         data=request.json #data contains user's filters
         print('data')
-        queryResult = Dataset1.query.filter(country, course, education, faculty)
+        queryResult = Dataset1.query.filter(country, course, education, faculty())
+
+@app.route('/countries', methods= ['GET'])
+def getCountries():
+    results = Dataset1.query.with_entities(Dataset1.location).group_by(Dataset1.location).all()
+    list = []
+    for row in results:
+        list.append(row.location)
+    myPrint(["list of countries", list[0:4], "..."])
+    return {'data' : list}
+
+@app.route('/courses', methods= ['GET'])
+def getCourses():
+    results = Courses.query.with_entities(Courses.course).group_by(Courses.course).all()
+    list = []
+    for row in results:
+        list.append(row.course)
+    myPrint(["list of courses", list[0:4], "..."])
+    return {'data' : list}
 
 
 

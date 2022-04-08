@@ -7,23 +7,21 @@ import UniversityBadge from "../components/homepage/UniversityBadge";
 
 function Home() {
   const [universities, setUniversities] = useState([]);
+  const [countries, setCountries] = useState(["USA", "Singapore"]);
   useEffect(() => {
     fetch("/universities")
       .then((res) => res.json())
       .then((data) => {
-        setUniversities(JSON.parse(data["data"]));
+        setUniversities(data["data"]);
       });
   }, []);
-  const display = universities.map((object, index) => {
+  const display = universities.map((school, index) => {
     return (
       <UniversityBadge
         key={index}
-        name={object.name}
-        rating={object.rating}
-        location={object.country}
-      >
-        {object["name"]}
-      </UniversityBadge>
+        name={school.institution}
+        location={school.location}
+      ></UniversityBadge>
     );
   });
 
@@ -32,7 +30,9 @@ function Home() {
       {" "}
       <CompanyLogo></CompanyLogo>
       <SearchBar></SearchBar>
-      {display}
+      <Flex direction={"row"} wrap="wrap" justify="space-evenly">
+        {display}
+      </Flex>
       <University
         name={"NTU"}
         rating={5}

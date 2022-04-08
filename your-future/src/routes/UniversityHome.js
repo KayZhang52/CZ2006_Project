@@ -8,13 +8,10 @@ import {
   Button,
   useDisclosure,
   Input,
+  HStack,
+  Icon,
 } from "@chakra-ui/react";
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-} from "@chakra-ui/react";
+import { FormControl, FormLabel } from "@chakra-ui/react";
 import React, { useState } from "react";
 import FunctionBar from "../components/university/FunctionBar";
 import TitleBox from "../components/university/TitleBox";
@@ -36,6 +33,9 @@ import {
   SliderThumb,
   SliderMark,
 } from "@chakra-ui/react";
+import { AiOutlineStar } from "react-icons/ai";
+import { BsBookmark } from "react-icons/bs";
+
 const { useEffect } = require("react");
 
 export function submitReview(comment, rating, username, university) {
@@ -51,28 +51,42 @@ export function submitReview(comment, rating, username, university) {
       university: university,
     }),
   }).then((res) => {
-    res.text().then((data) => {
-      if ((data = "successful")) {
-        return;
-      }
-    });
+    res.text().then((data) => {});
   });
 }
 
-export function BasicUsage(props) {
-  const { school } = props;
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [username, setUsername] = useState("");
-  const [rating, setRating] = useState("");
+function UniversityHome(props) {
+  const [schoolData, setSchoolData] = useState({});
+  const [reviews, setReviews] = useState([]);
   const [comment, setComment] = useState("");
+  const [rating, setRating] = useState("");
+  const [username, setUsername] = useState("");
+  const [address, setAddress] = useState("Address Not Found");
+  const [email, setEmail] = useState("Email not found");
+  const { school } = useParams();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const handleCommentChange = (e) => setComment(e.target.value);
+  const handleRatingChange = (v) => setRating(v);
 
-  const handleRatingChange = (val) => setRating(val);
-
-  return (
+  const initializeStates = () => {
+    try {
+      setUsername(JSON.parse(localStorage.getItem("userDetails"))["username"]);
+    } catch {}
+    fetch("/university?institution=".concat(school)).then((res) => {
+      res.json().then((data) => {
+        setSchoolData(data["data"]);
+      });
+    });
+    fetch("/reviews?institution=".concat(school)).then((res) => {
+      res.json().then((data) => {
+        setReviews(data["data"]);
+      });
+    });
+  };
+  useEffect(initializeStates, []);
+  const popup = (
     <>
-      <Button onClick={onOpen}>Open Modal</Button>
-
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -135,47 +149,52 @@ export function BasicUsage(props) {
       </Modal>
     </>
   );
-}
+  const functionBar = (
+    <Flex>
+      <HStack mb={2}>
+        <Button bgColor="red" color={"white"} onClick={onOpen}>
+          <Icon as={AiOutlineStar} mr={2}></Icon> Write a Review
+        </Button>
+        <Button>
+          <Icon as={BsBookmark} mr={2}></Icon> Save
+        </Button>
+      </HStack>
+    </Flex>
+  );
 
-function UniversityHome(props) {
-  const [schoolData, setSchoolData] = useState({});
-  const [reviews, setReviews] = useState([]);
-
-  const { school } = useParams();
-
-  const initializeStates = () => {
-    fetch("/university?institution=".concat(school)).then((res) => {
-      res.json().then((data) => {
-        setSchoolData(data["data"]);
-      });
-    });
-    fetch("/reviews?institution=".concat(school)).then((res) => {
-      res.json().then((data) => {
-        setReviews(data["data"]);
-      });
-    });
-  };
-  useEffect(initializeStates, []);
-
-  const [address, setAddress] = useState("Address Not Found");
-  const [email, setEmail] = useState("Email not found");
+  const noComment = (
+    <Container
+      textAlign={["center", "center"]}
+      fontStyle="italic"
+      pb={"1rem"}
+      mt={"1rem"}
+      mb={"1rem"}
+      ml={0}
+      style={{ boxShadow: "0 30px 40px rgba(0,0,0,.1)" }}
+    >
+      This university has no reviews yet.
+    </Container>
+  );
   return (
     <Box>
-      <p>{JSON.stringify(schoolData)}</p>
       <TitleBox name={school} reviews={10}></TitleBox>
       <Flex className="UniversityHome" justify={"space-around"}>
-        <Flex grow={2} justify="left" direction={"column"}>
-          <FunctionBar></FunctionBar>{" "}
+        <Flex grow={2} justify="flex-start" direction={"column"}>
+          {functionBar}
+          {popup}
+          <Box mb={"2rem"}></Box>
           {reviews.map((entry, index) => {
             return (
               <Review
-                username={entry.reviewerName}
-                comment={entry.summary}
-                rating={entry.overall}
+                username={entry.username}
+                comment={entry.comment}
+                rating={entry.rating}
+                dateTime={entry.reviewDateTime}
                 key={index}
               ></Review>
             );
           })}
+          {noComment}
         </Flex>
         <VStack grow={1}>
           <Box
@@ -197,7 +216,6 @@ function UniversityHome(props) {
           </Box>
         </VStack>
       </Flex>
-      <BasicUsage school={schoolData.institution} />
     </Box>
   );
 }
