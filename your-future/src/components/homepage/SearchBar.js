@@ -7,6 +7,7 @@ import {
   Input,
   HStack,
   Container,
+  Flex,
 } from "@chakra-ui/react";
 import {
   Popover,
@@ -25,9 +26,10 @@ import { AiOutlineTrophy, AiOutlineSearch } from "react-icons/ai";
 import { MdArrowDropDown } from "react-icons/md";
 import { useEffect, useState } from "react";
 
-export default function SearchBar() {
+export default function SearchBar({ schools }) {
   const [countries, setCountries] = useState(["USA", "Singapore"]);
   const [courses, setCourses] = useState(["Math", "Computer Sciece"]);
+  const [text, setText] = useState("");
   useEffect(() => {
     fetch("/countries")
       .then((res) => res.json())
@@ -40,6 +42,24 @@ export default function SearchBar() {
         setCourses(data["data"]);
       });
   }, []);
+
+  const handleCourseChange = (e) => {};
+  const handleSubmit = () => {
+    fetch("/universities", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        comment: comment,
+        rating: rating,
+        username: username,
+        university: university,
+      }),
+    }).then((res) => {
+      res.text().then((data) => {});
+    });
+  };
   return (
     <Container pb="3rem">
       <HStack mb={2}>
@@ -50,7 +70,7 @@ export default function SearchBar() {
           <PopoverContent>
             <PopoverArrow />
             <PopoverCloseButton />
-            <PopoverBody></PopoverBody>
+            <PopoverBody>testing</PopoverBody>
           </PopoverContent>
           <Button>
             <Icon as={AiOutlineSearch} mr={2}></Icon>Go!
@@ -87,18 +107,20 @@ export default function SearchBar() {
           </MenuList>
         </Menu>
 
-        <Menu>
-          <MenuButton as={Button} rightIcon={" "}>
-            <Icon as={FaBookReader} mr={2}></Icon>
-            Courses
-            <Icon as={MdArrowDropDown} ml={1}></Icon>
-          </MenuButton>
-          <MenuList maxH="25rem" overflowY={"scroll"}>
-            {/* {courses.map((course, index) => {
+        {/* {courses.map((course, index) => {
               return <MenuItem key={index}>{course}</MenuItem>;
             })} */}
-          </MenuList>
-        </Menu>
+
+        <Flex direction="row">
+          <Button borderTopRightRadius="0" borderBottomRightRadius="0" p="1rem">
+            <Icon as={FaBookReader}></Icon>Courses
+          </Button>
+          <Input
+            borderTopLeftRadius="0"
+            borderBottomLeftRadius="0"
+            onChange={handleCourseChange}
+          ></Input>
+        </Flex>
       </HStack>
     </Container>
   );

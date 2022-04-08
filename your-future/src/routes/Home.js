@@ -29,7 +29,7 @@ function Home() {
     <Box>
       {" "}
       <CompanyLogo></CompanyLogo>
-      <SearchBar></SearchBar>
+      <SearchBar schools={universities}></SearchBar>
       <Flex direction={"row"} wrap="wrap" justify="space-evenly">
         {display}
       </Flex>
