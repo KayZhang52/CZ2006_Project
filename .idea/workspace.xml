@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3e82a5a6-fcfb-4537-815d-ba207576cc1a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/sqlCommands.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sqlCommands.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/your-future/api/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/your-future/api/api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/your-future/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/your-future/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/your-future/src/components/NavBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/your-future/src/components/NavBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/your-future/src/components/homepage/SearchBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/your-future/src/components/homepage/SearchBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/your-future/src/components/homepage/UniversityBadge.js" beforeDir="false" afterPath="$PROJECT_DIR$/your-future/src/components/homepage/UniversityBadge.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/your-future/src/components/university/FunctionBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/your-future/src/components/university/FunctionBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/your-future/src/components/university/Review.js" beforeDir="false" afterPath="$PROJECT_DIR$/your-future/src/components/university/Review.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/your-future/src/components/university/TitleBox.js" beforeDir="false" afterPath="$PROJECT_DIR$/your-future/src/components/university/TitleBox.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/your-future/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/your-future/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/your-future/src/routes/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/your-future/src/routes/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/your-future/src/routes/LoginPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/your-future/src/routes/LoginPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/your-future/src/routes/UniversityHome.js" beforeDir="false" afterPath="$PROJECT_DIR$/your-future/src/routes/UniversityHome.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="27UuvfG9hoHgjadIDZWPSZ7OdzU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3e82a5a6-fcfb-4537-815d-ba207576cc1a" name="Changes" comment="" />
+      <created>1649387223474</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1649387223474</updated>
+    </task>
+    <servers />
+  </component>
+</project>
