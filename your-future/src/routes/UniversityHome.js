@@ -2,8 +2,6 @@ import {
   Box,
   Container,
   Flex,
-  Heading,
-  Image,
   VStack,
   Button,
   useDisclosure,
@@ -13,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/react";
 import React, { useState } from "react";
-import FunctionBar from "../components/university/FunctionBar";
 import TitleBox from "../components/university/TitleBox";
 import Review from "../components/university/Review";
 import { useParams } from "react-router-dom";
@@ -35,7 +32,7 @@ import {
 } from "@chakra-ui/react";
 import { AiOutlineStar } from "react-icons/ai";
 import { BsBookmark } from "react-icons/bs";
-
+import ReviewSearchBar from "../components/university/ReviewSearchBar";
 const { useEffect } = require("react");
 
 export function submitReview(comment, rating, username, university) {
@@ -64,6 +61,10 @@ function UniversityHome(props) {
   const [address, setAddress] = useState("Address Not Found");
   const [email, setEmail] = useState("Email not found");
   const { school } = useParams();
+  const [searchParams, setSearchParams] = useState({
+    inputValue: "*",
+    sortBy: "Newest First",
+  });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleCommentChange = (e) => setComment(e.target.value);
@@ -84,7 +85,9 @@ function UniversityHome(props) {
       });
     });
   };
-  useEffect(initializeStates, []);
+  useEffect(() => {
+    initializeStates();
+  }, [searchParams]);
   const popup = (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -175,16 +178,48 @@ function UniversityHome(props) {
       This university has no reviews yet.
     </Container>
   );
+
+  const sortedReviews = []
+    .concat(reviews)
+    .sort((a, b) => {
+      if (searchParams.sortBy == "Newest First") {
+        return new Date(b["reviewDateTime"]) > new Date(a["reviewDateTime"])
+          ? 1
+          : -1;
+      } else {
+        return new Date(b["reviewDateTime"]) > new Date(a["reviewDateTime"])
+          ? -1
+          : 1;
+      }
+    })
+    .map((entry, index) => {
+      return reviews.length >= 1 ? (
+        <Review
+          username={entry.username}
+          comment={entry.comment}
+          rating={entry.rating}
+          dateTime={entry.reviewDateTime}
+          key={index}
+        ></Review>
+      ) : (
+        noComment
+      );
+    });
   return (
     <Box>
       <TitleBox name={school} reviews={10}></TitleBox>
       <Flex className="UniversityHome" justify={"space-around"}>
+        {/* left column */}
         <Flex grow={2} justify="flex-start" direction={"column"}>
           {functionBar}
           {popup}
           <Box mb={"2rem"}></Box>
-          {reviews.map((entry, index) => {
-            return (
+          <ReviewSearchBar
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
+          ></ReviewSearchBar>
+          {/* {reviews.map((entry, index) => {
+            return reviews.length >= 1 ? (
               <Review
                 username={entry.username}
                 comment={entry.comment}
@@ -192,10 +227,13 @@ function UniversityHome(props) {
                 dateTime={entry.reviewDateTime}
                 key={index}
               ></Review>
+            ) : (
+              noComment
             );
-          })}
-          {noComment}
+          })} */}
+          {sortedReviews}
         </Flex>
+        {/* right column */}
         <VStack grow={1}>
           <Box
             border="1px"

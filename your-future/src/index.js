@@ -4,8 +4,6 @@ import "./index.css";
 import App from "./App";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginForm from "./components/userManagement/LoginForm";
-import SignUpForm from "./components/userManagement/SignUpForm";
 import Home from "./routes/Home";
 import RecommendationTool from "./routes/RecommendationTool";
 import RecommendationResult from "./routes/RecommendationResult";
@@ -26,7 +24,7 @@ ReactDOM.render(
           ></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignUpPage />}></Route>
-          <Route path="/test" element={<RecommendationResult />}></Route>
+          <Route path="/result" element={<RecommendationResult />}></Route>
           <Route
             path="recommendation-page"
             element={<RecommendationResult />}

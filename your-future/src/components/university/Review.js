@@ -9,9 +9,7 @@ import {
 import { useEffect } from "react";
 
 function Review({ username, comment, rating, dateTime }) {
-  useEffect(() => {
-    console.log(dateTime);
-  });
+  useEffect(() => {});
   return (
     <Container
       pb={"1rem"}
@@ -22,10 +20,7 @@ function Review({ username, comment, rating, dateTime }) {
     >
       <Flex justify={"flex-start"} direction="row">
         <VStack justify={"flex-start"} w={"5rem"}>
-          <Avatar
-            src="https://www.gannett-cdn.com/presto/2020/07/29/USAT/73d9330f-c382-4123-a56d-d61eefb2c373-AP_NY_Premiere_of_Netflixs__6_Underground_.JPG?width=660&height=440&fit=crop&format=pjpg&auto=webp"
-            size="xs"
-          ></Avatar>
+          <Avatar name={username} src="" size="xs"></Avatar>
           <Text>{username}</Text>
         </VStack>
         <VStack>

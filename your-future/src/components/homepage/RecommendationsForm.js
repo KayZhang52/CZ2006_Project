@@ -1,43 +1,67 @@
 import {
   Container,
-  Flex,
   VStack,
   Heading,
-  Text,
   SimpleGrid,
   GridItem,
   FormControl,
   FormLabel,
   Input,
   Select,
-  Checkbox,
   Button,
   Slider,
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
+  Stack,
+  SliderMark,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { Radio, RadioGroup } from "@chakra-ui/react";
 function RecommendationsForm(props) {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [results, setResults] = useState([]);
+  const [countryList, setCountryList] = useState(["USA", "Singapore"]);
+
+  const [formData, setFormData] = useState({
+    course: "Computer Science",
+    country: "*",
+    includeUser: "yes",
+    education: 3,
+    faculty: 3,
+    research: 3,
+  });
+
+  useEffect(() => {
+    fetch("/countries")
+      .then((res) => res.json())
+      .then((d) => {
+        setCountryList(d["data"]);
+      });
+  }, []);
   const getRecommendations = () => {
-    fetch("/universities").then((res) =>
+    console.log("submitting form: ", formData);
+    fetch("/yourfuturecore", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(formData),
+    }).then((res) => {
       res.json().then((data) => {
-        /* 1. data is a dictionay with key 'data' and value of a stringified json object
-            2. JSON.parse(data['data']) gives a JSON list of objects
-        */
         localStorage.setItem("recommendations", data["data"]);
-        console.log(localStorage.getItem("recommendations"));
-      })
-    );
+        console.log(
+          "received response: ",
+          localStorage.getItem("recommendations")
+        );
+      });
+    });
   };
   const handleSubmit = () => {
     getRecommendations();
-    navigate("/test");
+    navigate("/result");
   };
 
   const Form = (function () {
@@ -58,30 +82,43 @@ function RecommendationsForm(props) {
               className="abc"
             >
               <SimpleGrid columns={2} columnGap={3} rowGap={6} w="full ">
-                <GridItem colSpan={2}>
+                {/* <GridItem colSpan={2}>
                   <FormControl></FormControl>
                   <FormLabel>Study Level</FormLabel>
                   <Input placeholder="Bachelor"></Input>
-                </GridItem>
-                <GridItem colSpan={1}>
-                  <FormControl></FormControl>
-                  <FormLabel>Destination</FormLabel>
-                  <Input placeholder="John"></Input>
-                </GridItem>
+                </GridItem> */}
                 <GridItem colSpan={2}>
                   <FormControl></FormControl>
                   <FormLabel>Subject</FormLabel>
-                  <Input placeholder="Physics"></Input>
+                  <Input
+                    placeholder="Physics"
+                    onChange={(e) => {
+                      setFormData({ ...formData, course: e.target.value });
+                    }}
+                  ></Input>
                 </GridItem>
                 <GridItem colSpan={2}>
                   <FormControl></FormControl>
-                  <FormLabel>Destination</FormLabel>
+                  <FormLabel>Country</FormLabel>
                   <Select>
-                    <option value="usa">United States</option>
-                    <option value="de">Germany</option>
+                    {countryList.map((c, i) => {
+                      return (
+                        <option
+                          key={i}
+                          value=""
+                          onClick={(e) => {
+                            setFormData({
+                              ...formData,
+                              country: e.target.textContent,
+                            });
+                          }}
+                        >
+                          {c}
+                        </option>
+                      );
+                    })}
                   </Select>
                 </GridItem>
-                <GridItem colSpan={1}></GridItem>
                 <GridItem colSpan={1}>
                   <Button
                     size="lg"
@@ -108,34 +145,33 @@ function RecommendationsForm(props) {
             bg="gray.50"
           >
             <VStack spacing={3} alignItems="flex-start">
-              <Heading size="2x1">Tell us more about yourself.</Heading>
-            </VStack>
-            <VStack
-              w="full"
-              h="full"
-              p={10}
-              spacing={10}
-              alignItems="flex-start"
-              bg="gray.50"
-              className="abc"
-            >
+              <Heading size="2x1">
+                YourFuture values our users' opinions when it comes to the
+                quality of universities.{" "}
+              </Heading>
+
               <SimpleGrid columns={2} columnGap={3} rowGap={6} w="full ">
                 <GridItem colSpan={2}>
                   <FormControl></FormControl>
-                  <FormLabel>Highest Education</FormLabel>
-                  <Input></Input>
+                  <FormLabel>
+                    Would you like to take user reviews into consideration
+                  </FormLabel>
+                  <RadioGroup
+                    value={1}
+                    onChange={(e) => {
+                      setFormData({
+                        ...formData,
+                        includeUser: e.target.value,
+                      });
+                    }}
+                  >
+                    <Stack direction="column">
+                      <Radio value="yes">Yes of cos</Radio>
+                      <Radio value="no">Nah not really</Radio>
+                    </Stack>
+                  </RadioGroup>
                 </GridItem>
-                <GridItem colSpan={2}>
-                  <FormControl></FormControl>
-                  <FormLabel>Exam Format</FormLabel>
-                  <Input></Input>
-                </GridItem>
-                <GridItem colSpan={2}>
-                  <FormControl></FormControl>
-                  <FormLabel>GPA</FormLabel>
-                  <Input></Input>
-                </GridItem>
-                <GridItem>
+                <GridItem colSpan={1}>
                   <Button
                     size="lg"
                     w="full"
@@ -177,8 +213,33 @@ function RecommendationsForm(props) {
               <SimpleGrid columns={2} columnGap={3} rowGap={6} w="full">
                 <GridItem colSpan={2}>
                   <FormControl></FormControl>
-                  <FormLabel>Teaching</FormLabel>
-                  <Slider aria-label="slider-ex-1" defaultValue={30}>
+                  <FormLabel>Quality of Education</FormLabel>
+                  <Slider
+                    defaultValue={3}
+                    min={0}
+                    max={5}
+                    onChange={(val) => {
+                      setFormData({
+                        ...formData,
+                        education: val,
+                      });
+                    }}
+                  >
+                    <SliderMark value={1} mt="1" ml="-2.5" fontSize="sm">
+                      1
+                    </SliderMark>
+                    <SliderMark value={2} mt="1" ml="-2.5" fontSize="sm">
+                      2
+                    </SliderMark>
+                    <SliderMark value={3} mt="1" ml="-2.5" fontSize="sm">
+                      3
+                    </SliderMark>
+                    <SliderMark value={3} mt="1" ml="-2.5" fontSize="sm">
+                      3
+                    </SliderMark>
+                    <SliderMark value={4} mt="1" ml="-2.5" fontSize="sm">
+                      4
+                    </SliderMark>
                     <SliderTrack>
                       <SliderFilledTrack />
                     </SliderTrack>
@@ -187,8 +248,33 @@ function RecommendationsForm(props) {
                 </GridItem>
                 <GridItem colSpan={2}>
                   <FormControl></FormControl>
-                  <FormLabel>Legacy</FormLabel>
-                  <Slider aria-label="slider-ex-1" defaultValue={30}>
+                  <FormLabel>Quality of Faculty</FormLabel>
+                  <Slider
+                    defaultValue={3}
+                    min={0}
+                    max={5}
+                    onChange={(val) => {
+                      setFormData({
+                        ...formData,
+                        faculty: val,
+                      });
+                    }}
+                  >
+                    <SliderMark value={1} mt="1" ml="-2.5" fontSize="sm">
+                      1
+                    </SliderMark>
+                    <SliderMark value={2} mt="1" ml="-2.5" fontSize="sm">
+                      2
+                    </SliderMark>
+                    <SliderMark value={3} mt="1" ml="-2.5" fontSize="sm">
+                      3
+                    </SliderMark>
+                    <SliderMark value={3} mt="1" ml="-2.5" fontSize="sm">
+                      3
+                    </SliderMark>
+                    <SliderMark value={4} mt="1" ml="-2.5" fontSize="sm">
+                      4
+                    </SliderMark>
                     <SliderTrack>
                       <SliderFilledTrack />
                     </SliderTrack>
@@ -197,18 +283,33 @@ function RecommendationsForm(props) {
                 </GridItem>
                 <GridItem colSpan={2}>
                   <FormControl></FormControl>
-                  <FormLabel>Tuition Cost</FormLabel>
-                  <Slider aria-label="slider-ex-1" defaultValue={30}>
-                    <SliderTrack>
-                      <SliderFilledTrack />
-                    </SliderTrack>
-                    <SliderThumb />
-                  </Slider>
-                </GridItem>
-                <GridItem colSpan={2}>
-                  <FormControl></FormControl>
-                  <FormLabel>Accomodation</FormLabel>
-                  <Slider aria-label="slider-ex-1" defaultValue={30}>
+                  <FormLabel>Resesarch Performance</FormLabel>
+                  <Slider
+                    defaultValue={3}
+                    min={0}
+                    max={5}
+                    onChange={(val) => {
+                      setFormData({
+                        ...formData,
+                        research: val,
+                      });
+                    }}
+                  >
+                    <SliderMark value={1} mt="1" ml="-2.5" fontSize="sm">
+                      1
+                    </SliderMark>
+                    <SliderMark value={2} mt="1" ml="-2.5" fontSize="sm">
+                      2
+                    </SliderMark>
+                    <SliderMark value={3} mt="1" ml="-2.5" fontSize="sm">
+                      3
+                    </SliderMark>
+                    <SliderMark value={3} mt="1" ml="-2.5" fontSize="sm">
+                      3
+                    </SliderMark>
+                    <SliderMark value={4} mt="1" ml="-2.5" fontSize="sm">
+                      4
+                    </SliderMark>
                     <SliderTrack>
                       <SliderFilledTrack />
                     </SliderTrack>

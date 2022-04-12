@@ -26,56 +26,55 @@ import { AiOutlineTrophy, AiOutlineSearch } from "react-icons/ai";
 import { MdArrowDropDown } from "react-icons/md";
 import { useEffect, useState } from "react";
 
-export default function SearchBar({ schools }) {
-  const [countries, setCountries] = useState(["USA", "Singapore"]);
-  const [courses, setCourses] = useState(["Math", "Computer Sciece"]);
-  const [text, setText] = useState("");
+//searchBar should just return search params
+
+export default function SearchBar({ searchParams, setSearchParams }) {
+  const [countryList, setCountryList] = useState(["USA", "Singapore"]);
+  const [courseList, setCourseList] = useState(["Math", "Computer Sciece"]);
+
+  const [inputValue, setInputValue] = useState("*");
+  const [country, setCountry] = useState("*");
+  const [course, setCourse] = useState("*");
   useEffect(() => {
     fetch("/countries")
       .then((res) => res.json())
       .then((data) => {
-        setCountries(data["data"]);
+        setCountryList(data["data"]);
       });
     fetch("/courses")
       .then((res) => res.json())
       .then((data) => {
-        setCourses(data["data"]);
+        setCourseList(data["data"]);
       });
   }, []);
 
-  const handleCourseChange = (e) => {};
-  const handleSubmit = () => {
-    fetch("/universities", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        comment: comment,
-        rating: rating,
-        username: username,
-        university: university,
-      }),
-    }).then((res) => {
-      res.text().then((data) => {});
-    });
+  const handleInputValueChange = (e) => {
+    setInputValue(e.target.value);
+  };
+  const handleCountryChange = (e) => {
+    console.log("country changed");
+    setCountry(e.target.textContent);
+  };
+  const handleCourseChange = (e) => {
+    setCourse(e.target.value);
+  };
+  const handleSubmit = (e) => {
+    let newObj = {
+      ...searchParams,
+      nputValue: inputValue,
+      country: country,
+      course: course,
+    };
+    setSearchParams(newObj);
   };
   return (
     <Container pb="3rem">
       <HStack mb={2}>
-        <Popover>
-          <PopoverTrigger>
-            <Input defaultValue={""}></Input>
-          </PopoverTrigger>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <PopoverBody>testing</PopoverBody>
-          </PopoverContent>
-          <Button>
-            <Icon as={AiOutlineSearch} mr={2}></Icon>Go!
-          </Button>
-        </Popover>
+        <Input defaultValue={""} onChange={handleInputValueChange}></Input>
+
+        <Button onClick={handleSubmit}>
+          <Icon as={AiOutlineSearch} mr={2}></Icon>Go!
+        </Button>
       </HStack>
 
       <HStack mb={2}>
@@ -83,37 +82,27 @@ export default function SearchBar({ schools }) {
           <MenuButton as={Button} rightIcon={" "}>
             <Icon as={FaFlagUsa} mr={2}></Icon>
             Country
-            <Icon as={MdArrowDropDown} ml={1}></Icon>
           </MenuButton>
           <MenuList maxH="25rem" overflowY={"scroll"}>
-            {countries.map((country, index) => {
-              return <MenuItem key={index}>{country}</MenuItem>;
+            {countryList.map((country, index) => {
+              return (
+                <MenuItem key={index} onClick={handleCountryChange}>
+                  {country}
+                </MenuItem>
+              );
             })}
           </MenuList>
         </Menu>
 
-        <Menu>
-          <MenuButton as={Button} rightIcon={" "}>
-            <Icon as={AiOutlineTrophy} mr={2}></Icon>
-            Ranking
-            <Icon as={MdArrowDropDown} ml={1}></Icon>
-          </MenuButton>
-          <MenuList>
-            <MenuItem>Top 5</MenuItem>
-            <MenuItem>Top 10</MenuItem>
-            <MenuItem>Top 20</MenuItem>
-            <MenuItem>Top 100</MenuItem>
-            <MenuItem>Top 200</MenuItem>
-          </MenuList>
-        </Menu>
-
-        {/* {courses.map((course, index) => {
-              return <MenuItem key={index}>{course}</MenuItem>;
-            })} */}
-
         <Flex direction="row">
-          <Button borderTopRightRadius="0" borderBottomRightRadius="0" p="1rem">
-            <Icon as={FaBookReader}></Icon>Courses
+          <Button
+            borderTopRightRadius="0"
+            borderBottomRightRadius="0"
+            pl="2rem"
+            pr="2rem"
+            leftIcon={<FaBookReader />}
+          >
+            Course
           </Button>
           <Input
             borderTopLeftRadius="0"

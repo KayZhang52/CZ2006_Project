@@ -1,12 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Box, Flex } from "@chakra-ui/react";
-import { Bar } from "react-chartjs-2";
+import { LineChart, Line, PieChart, Pie } from "recharts";
+import frequency from "../utilities/frequency";
+import { dummyData } from "../utilities/dummyData";
 
 function RecommendationResult(props) {
-  const results = JSON.parse(localStorage.getItem("recommendations"));
+  const [results, setResults] = useState();
   useEffect(() => {
-    console.log(results);
+    // setResults(localStorage.getItem("recommendations"));
   });
+
+  const renderLineChart = (
+    <LineChart data={results}>
+      <Line type="monotone" dataKey="score"></Line>
+    </LineChart>
+  );
+  //composition by country
+  const renderPieChart = (
+    <PieChart width={730} height={250}>
+      <Pie
+        data={dummyData}
+        dataKey="value"
+        nameKey="name"
+        cx="50%"
+        cy="50%"
+        outerRadius={50}
+        fill="#8884d8"
+      />
+    </PieChart>
+  );
   return (
     <Container maxW="100%">
       <Box
@@ -24,16 +46,15 @@ function RecommendationResult(props) {
         My Matches
       </Box>
       <Flex>
-        <Box className="filterDetailsBox" flex={1} minH="1000px">
-          Filters:
-        </Box>
         <Box className="graphsBox" bgColor="#EDF2F7" flex={1} minH="1000px">
           Data Visualization:
+          {renderLineChart}
+          {renderPieChart}
         </Box>
         <Box className="recommendationBox" flex={1} minH="1000px">
           Our Recommendations
-          {results.map((data, index) => {
-            return <p key={index}>{data.name}</p>;
+          {results.map((entry, index) => {
+            return <p key={index}>{entry.institution}</p>;
           })}
         </Box>
       </Flex>

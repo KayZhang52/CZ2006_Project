@@ -6,16 +6,29 @@ import CompanyLogo from "../components/homepage/CompanyLogo";
 import UniversityBadge from "../components/homepage/UniversityBadge";
 
 function Home() {
-  const [universities, setUniversities] = useState([]);
-  const [countries, setCountries] = useState(["USA", "Singapore"]);
+  const [universityList, setUniversityList] = useState([]);
+  const [searchParams, setSearchParams] = useState({
+    inputValue: "",
+    country: "",
+    course: "",
+  });
   useEffect(() => {
-    fetch("/universities")
+    const url = [
+      "/universities?",
+      "country=",
+      searchParams.country,
+      "&course=",
+      searchParams.course,
+      "&keyword=",
+      searchParams.inputValue,
+    ].join("");
+    fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setUniversities(data["data"]);
+        setUniversityList(data["data"]);
       });
-  }, []);
-  const display = universities.map((school, index) => {
+  }, [searchParams]);
+  const display = universityList.map((school, index) => {
     return (
       <UniversityBadge
         key={index}
@@ -29,18 +42,13 @@ function Home() {
     <Box>
       {" "}
       <CompanyLogo></CompanyLogo>
-      <SearchBar schools={universities}></SearchBar>
+      <SearchBar
+        searchParams={searchParams}
+        setSearchParams={setSearchParams}
+      ></SearchBar>
       <Flex direction={"row"} wrap="wrap" justify="space-evenly">
         {display}
       </Flex>
-      <University
-        name={"NTU"}
-        rating={5}
-        location={"Singapore"}
-        imgSrc={
-          "https://imageio.forbes.com/specials-images/imageserve/1209892117/Dunster-House/960x0.jpg?fit=bounds&format=jpg&width=960"
-        }
-      ></University>
     </Box>
   );
 }
