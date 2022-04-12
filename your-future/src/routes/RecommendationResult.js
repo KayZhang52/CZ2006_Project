@@ -16,7 +16,8 @@ function RecommendationResult(props) {
     return frequency("Location", results);
   });
   useEffect(() => {
-    console.log(results);
+    console.log("results: ", results);
+    console.log("piedata: ", chartData);
   });
   //composition by country
   const renderPieChart = (

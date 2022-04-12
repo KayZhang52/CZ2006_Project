@@ -22,6 +22,7 @@ function Home() {
       "&keyword=",
       searchParams.inputValue,
     ].join("");
+    console.log(url);
     fetch(url)
       .then((res) => res.json())
       .then((data) => {

@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Radio, RadioGroup } from "@chakra-ui/react";
 import RecommendationResult from "../../routes/RecommendationResult";
+
 function RecommendationsForm(props) {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
@@ -36,6 +37,7 @@ function RecommendationsForm(props) {
   });
 
   useEffect(() => {
+    console.log(formData);
     fetch("/countries")
       .then((res) => res.json())
       .then((d) => {

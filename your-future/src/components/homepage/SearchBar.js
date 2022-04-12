@@ -9,17 +9,6 @@ import {
   Container,
   Flex,
 } from "@chakra-ui/react";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
-} from "@chakra-ui/react";
 import { Icon } from "@chakra-ui/react";
 import { FaFlagUsa, FaBookReader } from "react-icons/fa";
 import { AiOutlineTrophy, AiOutlineSearch } from "react-icons/ai";
@@ -61,7 +50,7 @@ export default function SearchBar({ searchParams, setSearchParams }) {
   const handleSubmit = (e) => {
     let newObj = {
       ...searchParams,
-      nputValue: inputValue,
+      inputValue: inputValue,
       country: country,
       course: course,
     };

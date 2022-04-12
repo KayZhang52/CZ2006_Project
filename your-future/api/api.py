@@ -90,7 +90,17 @@ def universities_query():
     """
     country = request.args.get("country", default="*", type=str)
     course = request.args.get("course", default="*", type=str)
-    myPrint(["country: "+country, "course: "+course])
+    keyword = request.args.get("keyword", default="*", type=str)
+
+    if(keyword!="*"):
+        myPrint(["request for: ", keyword])
+        results = Dataset1.query.filter(Dataset1.institution == keyword).order_by(Dataset1.score).all()
+        list=[]
+        if(results != None):
+            for row in results:
+                list.append(row.as_dict())
+            return {'data': list}
+    
     if(country!="*" and course!="*"):
         results = Dataset1.query.join(Courses, Dataset1.institution==Courses.institution).filter(Dataset1.location == country).filter(Courses.course==course).limit(100).all()
     elif country!="*":
