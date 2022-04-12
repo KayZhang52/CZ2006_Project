@@ -11,6 +11,7 @@ import UniversityHome from "./routes/UniversityHome";
 import SchoolList from "./routes/SchoolList";
 import LoginPage from "./routes/LoginPage";
 import SignUpPage from "./routes/SignUpPage";
+import RecommendationsForm from "./components/homepage/RecommendationsForm";
 
 ReactDOM.render(
   <ChakraProvider>
@@ -20,7 +21,7 @@ ReactDOM.render(
           <Route index element={<Home />}></Route>
           <Route
             path="/recommendation"
-            element={<RecommendationTool />}
+            element={<RecommendationsForm />}
           ></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignUpPage />}></Route>

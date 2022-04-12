@@ -1,33 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { Container, Box, Flex } from "@chakra-ui/react";
-import { LineChart, Line, PieChart, Pie } from "recharts";
+import { Container, Box, Flex, Heading } from "@chakra-ui/react";
+import { LineChart, Line, PieChart, Pie, ResponsiveContainer } from "recharts";
 import frequency from "../utilities/frequency";
 import { dummyData } from "../utilities/dummyData";
 
 function RecommendationResult(props) {
-  const [results, setResults] = useState();
-  useEffect(() => {
-    // setResults(localStorage.getItem("recommendations"));
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+  const [results, setResults] = useState(() => {
+    const saved = localStorage.getItem("recommendations");
+    const initialValue = JSON.parse(saved);
+    return initialValue || [];
   });
 
-  const renderLineChart = (
-    <LineChart data={results}>
-      <Line type="monotone" dataKey="score"></Line>
-    </LineChart>
-  );
+  const [chartData, setChartData] = useState(() => {
+    return frequency("Location", results);
+  });
+  useEffect(() => {
+    console.log(results);
+  });
   //composition by country
   const renderPieChart = (
-    <PieChart width={730} height={250}>
-      <Pie
-        data={dummyData}
-        dataKey="value"
-        nameKey="name"
-        cx="50%"
-        cy="50%"
-        outerRadius={50}
-        fill="#8884d8"
-      />
-    </PieChart>
+    <ResponsiveContainer width="100%" height={250}>
+      <PieChart>
+        <Pie
+          data={chartData}
+          dataKey="count"
+          nameKey="country"
+          cx="50%"
+          cy="50%"
+          outerRadius={100}
+          innerRadius={50}
+          fill="#8884d8"
+          label={(entry) => {
+            return entry.country + ": " + entry.count;
+          }}
+        />
+      </PieChart>
+    </ResponsiveContainer>
   );
   return (
     <Container maxW="100%">
@@ -45,16 +54,15 @@ function RecommendationResult(props) {
       >
         My Matches
       </Box>
-      <Flex>
-        <Box className="graphsBox" bgColor="#EDF2F7" flex={1} minH="1000px">
+      <Flex direction="column">
+        <Box className="graphsBox" bgColor="#EDF2F7" minH="0">
           Data Visualization:
-          {renderLineChart}
           {renderPieChart}
         </Box>
-        <Box className="recommendationBox" flex={1} minH="1000px">
-          Our Recommendations
+        <Box className="recommendationBox" minH="1000px" textAlign={"center"}>
+          <Heading>Our Recommendations</Heading>
           {results.map((entry, index) => {
-            return <p key={index}>{entry.institution}</p>;
+            return <p key={index}>{entry.Institution}</p>;
           })}
         </Box>
       </Flex>

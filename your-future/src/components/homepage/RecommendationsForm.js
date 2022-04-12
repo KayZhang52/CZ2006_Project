@@ -19,6 +19,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Radio, RadioGroup } from "@chakra-ui/react";
+import RecommendationResult from "../../routes/RecommendationResult";
 function RecommendationsForm(props) {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
@@ -51,11 +52,7 @@ function RecommendationsForm(props) {
       body: JSON.stringify(formData),
     }).then((res) => {
       res.json().then((data) => {
-        localStorage.setItem("recommendations", data["data"]);
-        console.log(
-          "received response: ",
-          localStorage.getItem("recommendations")
-        );
+        localStorage.setItem("recommendations", JSON.stringify(data["data"]));
       });
     });
   };
