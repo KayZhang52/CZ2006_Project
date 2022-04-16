@@ -59,7 +59,11 @@ export default function SearchBar({ searchParams, setSearchParams }) {
   return (
     <Container pb="3rem">
       <HStack mb={2}>
-        <Input defaultValue={""} onChange={handleInputValueChange}></Input>
+        <Input
+          bg="white"
+          defaultValue={""}
+          onChange={handleInputValueChange}
+        ></Input>
 
         <Button onClick={handleSubmit}>
           <Icon as={AiOutlineSearch} mr={2}></Icon>Go!
@@ -90,6 +94,9 @@ export default function SearchBar({ searchParams, setSearchParams }) {
             pl="2rem"
             pr="2rem"
             leftIcon={<FaBookReader />}
+            _hover={{ cursor: "default" }}
+            _click={{}}
+            _focus={{}}
           >
             Course
           </Button>
@@ -97,6 +104,7 @@ export default function SearchBar({ searchParams, setSearchParams }) {
             borderTopLeftRadius="0"
             borderBottomLeftRadius="0"
             onChange={handleCourseChange}
+            background="white"
           ></Input>
         </Flex>
       </HStack>

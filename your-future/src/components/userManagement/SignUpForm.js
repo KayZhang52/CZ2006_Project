@@ -68,12 +68,12 @@ function SignUpForm(props) {
 
   return (
     <VStack
-      w="full"
+      w="40rem"
+      bg="rgba(237,242,247,0.5)"
       h="full"
       p={10}
       spacing={10}
       alignItems="flex-start"
-      bg="gray.50"
     >
       <VStack spacing={3} alignItems="flex-start">
         <Heading size="2x1">Sign Up</Heading>

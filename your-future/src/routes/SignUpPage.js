@@ -1,4 +1,4 @@
-import { Button, Container, useDisclosure } from "@chakra-ui/react";
+import { Button, Container, Image, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import SignUpForm from "../components/userManagement/SignUpForm";
@@ -16,8 +16,18 @@ function SignUpPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   return (
-    <Container>
-      <SignUpForm signupHandler={onOpen}></SignUpForm>
+    <Container className="lol" minW="100vw">
+      <Image
+        src={process.env.PUBLIC_URL + "/images/schoolBg.jpg"}
+        position="fixed"
+        mt="-8.3rem"
+        ml="-1rem"
+        minW="100vw"
+        minH="100vh"
+        fit="stretch"
+        zIndex="-1"
+      ></Image>
+      <SignUpForm signupHandler={onOpen} margin="0 auto"></SignUpForm>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

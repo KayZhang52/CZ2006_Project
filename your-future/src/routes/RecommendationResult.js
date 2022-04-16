@@ -16,9 +16,10 @@ function RecommendationResult(props) {
     return frequency("Location", results);
   });
   useEffect(() => {
-    console.log("results: ", results);
-    console.log("piedata: ", chartData);
-  });
+    setChartData(() => {
+      return frequency("Location", results);
+    });
+  }, [results]);
   //composition by country
   const renderPieChart = (
     <ResponsiveContainer width="100%" height={250}>
@@ -33,7 +34,7 @@ function RecommendationResult(props) {
           innerRadius={50}
           fill="#8884d8"
           label={(entry) => {
-            return entry.country + ": " + entry.count;
+            return entry.country;
           }}
         />
       </PieChart>
@@ -63,7 +64,11 @@ function RecommendationResult(props) {
         <Box className="recommendationBox" minH="1000px" textAlign={"center"}>
           <Heading>Our Recommendations</Heading>
           {results.map((entry, index) => {
-            return <p key={index}>{entry.Institution}</p>;
+            return (
+              <p key={index}>
+                {entry.Institution}: {entry.newScore.toFixed(2)}
+              </p>
+            );
           })}
         </Box>
       </Flex>

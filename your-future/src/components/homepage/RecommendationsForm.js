@@ -90,7 +90,7 @@ function RecommendationsForm(props) {
                   <FormControl></FormControl>
                   <FormLabel>Subject</FormLabel>
                   <Input
-                    placeholder="Physics"
+                    placeholder="Computer Science"
                     onChange={(e) => {
                       setFormData({ ...formData, course: e.target.value });
                     }}
@@ -99,13 +99,33 @@ function RecommendationsForm(props) {
                 <GridItem colSpan={2}>
                   <FormControl></FormControl>
                   <FormLabel>Country</FormLabel>
-                  <Select>
+                  <Select
+                    onChange={(e) => {
+                      console.log("x");
+                      setFormData({
+                        ...formData,
+                        country: e.target.value,
+                      });
+                    }}
+                  >
+                    <option
+                      value="*"
+                      onClick={(e) => {
+                        setFormData({
+                          ...formData,
+                          country: e.target.textContent,
+                        });
+                      }}
+                    >
+                      *
+                    </option>
                     {countryList.map((c, i) => {
                       return (
                         <option
                           key={i}
-                          value=""
+                          value={c}
                           onClick={(e) => {
+                            console.log("x");
                             setFormData({
                               ...formData,
                               country: e.target.textContent,

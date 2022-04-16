@@ -1,8 +1,19 @@
-import { Flex, HStack, Spacer, Button, Text, Icon } from "@chakra-ui/react";
+import {
+  Flex,
+  HStack,
+  Spacer,
+  Button,
+  Text,
+  Icon,
+  Heading,
+} from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { BiUserCircle } from "react-icons/bi";
 import { useState } from "react";
+import CompanyLogo from "./homepage/CompanyLogo";
+import { SiGooglescholar } from "react-icons/si";
+import { registerables } from "chart.js";
 
 function NavBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -17,26 +28,29 @@ function NavBar() {
       setIsLoggedIn(localStorage.getItem("login") === "true" ? true : false);
     });
   }, []);
-  /**
-   *
-   *  localStorage[user] has structure of
-   * {
-   *    'login',
-   *    'userDetails':'....................'
-   * }
-   */
 
   const part = (to, text) => {
     return (
-      <Button>
+      <Button
+        className="navBtn"
+        bg="rgba(0,0,0,0)"
+        color="white"
+        _hover={{
+          backgroundColor: "rgba(0,0,0,0.5)",
+        }}
+      >
         <Link to={to}>{text}</Link>
       </Button>
     );
   };
   const userRelated = !isLoggedIn ? (
-    <HStack>
-      {part("login", "Login")}
-      {part("signup", "Sign Up")}
+    <HStack mr="2rem">
+      <Button>
+        <Link to="Login">Login</Link>
+      </Button>
+      <Button bg="red" color="white">
+        <Link to="Signup">Sign up</Link>
+      </Button>
     </HStack>
   ) : (
     <HStack>
@@ -55,7 +69,20 @@ function NavBar() {
   );
 
   return (
-    <Flex pb={"2rem"}>
+    <Flex pb={"2rem"} align="center">
+      <Flex
+        direction={"horizontal"}
+        h="100px"
+        align="center"
+        justify="center"
+        pr="1rem"
+        pl="1rem"
+      >
+        <Heading color="white" size="2xl">
+          Your Future
+        </Heading>
+        <Icon as={SiGooglescholar} boxSize={"2rem"} color="white"></Icon>
+      </Flex>
       <HStack>
         {part("/", "Home")}
         {part("recommendation", "Get Recommendations")}

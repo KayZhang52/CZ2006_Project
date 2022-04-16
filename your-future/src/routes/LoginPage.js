@@ -1,4 +1,4 @@
-import { Button, Container } from "@chakra-ui/react";
+import { Button, Container, Image } from "@chakra-ui/react";
 import React, { useState } from "react";
 import {
   Modal,
@@ -97,12 +97,14 @@ function LoginPage(props) {
   };
   const loginForm = (
     <VStack
-      w="full"
+      w="40rem"
+      bg="rgba(237,242,247,0.5)"
+      borderRadius="25px"
       h="full"
       p={10}
       spacing={10}
       alignItems="flex-start"
-      bg="gray.50"
+      margin="0 auto"
     >
       <VStack spacing={3} alignItems="flex-start">
         <Heading size="2x1">Login</Heading>
@@ -113,7 +115,6 @@ function LoginPage(props) {
         p={10}
         spacing={10}
         alignItems="flex-start"
-        bg="gray.50"
         className="abc"
       >
         <SimpleGrid columns={2} columnGap={3} rowGap={6} w="full ">
@@ -132,6 +133,7 @@ function LoginPage(props) {
               <FormLabel>Password</FormLabel>
               <Input
                 placeholder="password123"
+                type={"password"}
                 onChange={handlePasswordChange}
               ></Input>
             </FormControl>
@@ -150,7 +152,17 @@ function LoginPage(props) {
   );
 
   return (
-    <Container>
+    <Container minW="100vw">
+      <Image
+        src={process.env.PUBLIC_URL + "/images/schoolBg.jpg"}
+        position="absolute"
+        mt="-8.3rem"
+        ml="-1rem"
+        minW="100vw"
+        minH="100vh"
+        fit="stretch"
+        zIndex="-1"
+      ></Image>
       {loginForm}
       {popUp(msg, theme)}
     </Container>

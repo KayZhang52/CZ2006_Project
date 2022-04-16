@@ -21,7 +21,7 @@ ReactDOM.render(
           <Route index element={<Home />}></Route>
           <Route
             path="/recommendation"
-            element={<RecommendationsForm />}
+            element={<RecommendationTool />}
           ></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignUpPage />}></Route>

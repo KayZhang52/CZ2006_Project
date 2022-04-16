@@ -1,3 +1,9 @@
 .university {
   border: 1px grey solid;
+  transition: all 0.1s ease-in-out;
+}
+
+.university:hover {
+  margin-top: -5px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 }
