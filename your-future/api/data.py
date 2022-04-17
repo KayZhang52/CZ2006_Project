@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from model import Dataset1, Courses, Reviews, uniscoresdataset, uniscoresdatasetfull, Users
+from model import Dataset1, Courses, Reviews, uniscoresdataset, uniscoresdatasetfull, Users, db
 from datetime import datetime
 from utilities import myPrint
 
@@ -108,71 +108,19 @@ def reviews():
 
 @data.route('/yourfuturecore', methods=['GET', 'POST'])
 def recommendationLogic():
-    if(request.method=='POST'):
-        data=request.json #data contains user's filters
-        new_recommendation = data
-
-        dataUni = uniscoresdataset.query.with_entities(uniscoresdataset.Institution,uniscoresdataset.Location,uniscoresdataset.QualityOfEducationScore,uniscoresdataset.FacultyScore,uniscoresdataset.ResearchScore,uniscoresdataset.Score).order_by(uniscoresdataset.Score).all()
-        #myPrint(dataUni)
-        dataUnilist = []
-        for row in dataUni:
-            dataUniRow = {'Institution':row[0],'Location':row[1],'QualityOfEducationScore':row[2],'FacultyScore':row[3],'ResearchScore':row[4],'Score':row[5]}
-            dataUnilist.append(dataUniRow)
-        #myPrint(dataUnilist) 
-        #list of dictionaries of unis
-
-        dataCourse = Courses.query.with_entities(Courses.institution,Courses.course).all()
-        #myPrint(dataCourse)
-        dataCourselist = []
-        for row in dataCourse:
-            dataCourseRow = {'Institution':row[0],'course':row[1]}
-            dataCourselist.append(dataCourseRow)
-        #myPrint(dataCourselist) 
-        #list of dics of courses
-
-        unifulllist = []
-        unifull = uniscoresdatasetfull.query.with_entities(uniscoresdatasetfull.Institution,uniscoresdatasetfull.Location,uniscoresdatasetfull.QualityOfEducationScore,uniscoresdatasetfull.FacultyScore,uniscoresdatasetfull.ResearchScore,uniscoresdatasetfull.Score,uniscoresdatasetfull.Course, uniscoresdatasetfull.Location).order_by(uniscoresdatasetfull.Score).all()
-        for row in unifull:
-            unifullrow = {'Institution':row[0],'Location':row[1],'QualityOfEducationScore':row[2],'FacultyScore':row[3],'ResearchScore':row[4],'Score':row[5],'Course':row[6], 'Location':row[7]}
-            unifulllist.append(unifullrow)
-        #myPrint(unifulllist)
-
-        # list2 = sorted(list2, key = lambda i: i['Score'])
-
-        for row in unifulllist:
-            newScore = new_recommendation['education']*row['QualityOfEducationScore'] + new_recommendation['faculty']*row['FacultyScore']+ new_recommendation['research']*row['ResearchScore']
-            row['newScore'] = newScore
-        #myPrint(unifulllist)
-    
-        finallist = []
-        returns = []
-        returnlist = []
-        for row in unifulllist:
-            if row['Course'] == new_recommendation['course'] and row['Location'] == new_recommendation['country']:
-                finallist.append(row)
-        finallist = sorted(finallist, key = lambda i: i['newScore'], reverse = True)
-        finallisttop5 = []
-        finallisttop5 = finallist[0:]
-        #myPrint(finallisttop5)
-        keyslist = []
-        for row in finallisttop5:
-            returns.append(row['Location'])
-            returns.append(row['Institution'])
-            returns.append(row['Course'])
-            returns.append(row['Score'])
-            returns.append(row['newScore'])
-            keysdictionary = {'Location', 'Institution','Course', 'Score','newScore'}
-            returnskeys = {key: None for key in keysdictionary}
-            returnskeys['Location'] = returns[0]
-            returnskeys['Institution'] = returns[1]
-            returnskeys['Course'] = returns[2]
-            returnskeys['Score'] = returns[3]
-            returnskeys['newScore'] = returns[4]
-            keyslist.append(returnskeys)
-            returnskeys = {key: None for key in keysdictionary}
-            returns = []
-            
-        return {'data' : keyslist}
+    filter=request.json 
+    joinedData = uniscoresdataset.query.join(Courses, uniscoresdataset.Institution==Courses.institution)
+    if(filter['country']!="*"):
+        joinedData = joinedData.filter(uniscoresdataset.Location==filter['country'])
+    if(filter['course']!="*"):
+        joinedData = joinedData.filter(Courses.course==filter['course'])
+    list = []
+    for row in joinedData:
+        list.append(row.as_dict())
+    for row in list:
+        newScore = filter['education']*row['QualityOfEducationScore'] + filter['faculty']*row['FacultyScore']+ filter['research']*row['ResearchScore']
+        row['newScore'] = newScore
+    return {'data':list}
 
 @data.route('/countries', methods= ['GET'])
 def getCountries():
@@ -191,3 +139,19 @@ def getCourses():
         list.append(row.course)
     myPrint(["list of courses", list[0:4], "..."])
     return {'data' : list}
+
+@data.route('/yourfuturecore2', methods=['GET', 'POST'])
+def recommendationLogic2():
+    filter=request.json 
+    joinedData = uniscoresdataset.query.join(Courses, uniscoresdataset.Institution==Courses.institution)
+    if(filter['country']!="*"):
+        joinedData = joinedData.filter(uniscoresdataset.Location==filter['country'])
+    if(filter['course']!="*"):
+        joinedData = joinedData.filter(Courses.course==filter['course'])
+    list = []
+    for row in joinedData:
+        list.append(row.as_dict())
+    for row in list:
+        newScore = filter['education']*row['QualityOfEducationScore'] + filter['faculty']*row['FacultyScore']+ filter['research']*row['ResearchScore']
+        row['newScore'] = newScore
+    return {'data':list}

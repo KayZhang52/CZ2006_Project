@@ -54,6 +54,7 @@ export default function SearchBar({ searchParams, setSearchParams }) {
       country: country,
       course: course,
     };
+    console.log("searchParams: ", newObj);
     setSearchParams(newObj);
   };
   return (

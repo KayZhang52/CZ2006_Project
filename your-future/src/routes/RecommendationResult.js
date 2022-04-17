@@ -6,11 +6,7 @@ import { dummyData } from "../utilities/dummyData";
 
 function RecommendationResult(props) {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-  const [results, setResults] = useState(() => {
-    const saved = localStorage.getItem("recommendations");
-    const initialValue = JSON.parse(saved);
-    return initialValue || [];
-  });
+  const [results, setResults] = useState(props.results);
 
   const [chartData, setChartData] = useState(() => {
     return frequency("Location", results);
