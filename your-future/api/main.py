@@ -8,5 +8,5 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqldb://root:Ab123123@119.8.175
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-from data import data
+from routes.data import data
 app.register_blueprint(data,url_prefix='//')
